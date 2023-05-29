@@ -13,6 +13,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
+import org.valkyrienskies.addon.control.config.VSControlConfig;
 import org.valkyrienskies.addon.control.util.BaseBlock;
 import org.valkyrienskies.mod.common.block.IBlockForceProvider;
 import org.valkyrienskies.mod.common.ships.ship_world.PhysicsObject;
@@ -42,7 +43,7 @@ public class BlockRudderPart extends BaseBlock implements ITileEntityProvider, I
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityRudderPart();
+        return new TileEntityRudderPart(VSControlConfig.rudderForceMultiplier);
     }
 
     @Override
@@ -76,9 +77,9 @@ public class BlockRudderPart extends BaseBlock implements ITileEntityProvider, I
         if (world.getTileEntity(pos) instanceof TileEntityRudderPart) {
             TileEntityRudderPart tileEntity = (TileEntityRudderPart) world
                 .getTileEntity(pos);
-            Vector3d forceBeforeTimeScale = tileEntity.calculateForceFromVelocity(physicsObject);
+            Vector3d forceBeforeTimeScale = tileEntity.calculateForceFromAngle(physicsObject);
             if (forceBeforeTimeScale != null && forceBeforeTimeScale.lengthSquared() > 1) {
-                // System.out.println(forceBeforeTimeScale.toRoundedString());
+                //System.out.println(forceBeforeTimeScale.toString());
                 return forceBeforeTimeScale.mul(secondsToApply);
             } else {
                 return null;

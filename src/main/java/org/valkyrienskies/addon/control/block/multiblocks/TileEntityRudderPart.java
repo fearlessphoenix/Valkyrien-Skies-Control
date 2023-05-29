@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.joml.AxisAngle4d;
+import org.joml.Math;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.valkyrienskies.addon.control.MultiblockRegistry;
@@ -28,8 +29,9 @@ public class TileEntityRudderPart extends
     private double prevRudderAngle;
     private double nextRudderAngle;
 
-    public TileEntityRudderPart() {
+    public TileEntityRudderPart(double maxThrust) {
         super();
+        this.setMaxThrust(maxThrust);
         this.rudderAngle = 0;
         this.prevRudderAngle = 0;
         this.nextRudderAngle = 0;
@@ -59,8 +61,7 @@ public class TileEntityRudderPart extends
         if (getRudderAxleSchematic().isPresent()) {
             Vec3i directionFacing = getRudderAxleFacingDirection().get().getDirectionVec();
             Vec3i directionAxle = this.getRudderAxleAxisDirection().get().getDirectionVec();
-            Vector3d facingOffset = new Vector3d(directionFacing.getX(), directionFacing.getY(),
-                directionFacing.getZ());
+            Vector3d facingOffset = new Vector3d(directionFacing.getX(), directionFacing.getY(), directionFacing.getZ());
             double axleLength = getRudderAxleLength().get();
             // Then estimate the torque output for both, and use the one that has a positive
             // dot product to torqueAttemptNormal.
@@ -101,6 +102,22 @@ public class TileEntityRudderPart extends
         }
     }
 
+    public Vector3d calculateForceFromAngle(PhysicsObject physicsObject) {
+        if (getRudderAxleSchematic().isPresent()) {
+            Vec3i directionFacing = getRudderAxleFacingDirection().get().getDirectionVec();
+            Vec3i directionAxle = this.getRudderAxleAxisDirection().get().getDirectionVec();
+            // Cross product of directionFacing and directionAxle.
+            Vector3d forceDirection = new Vector3d(
+                    (directionFacing.getY() * directionAxle.getZ() - directionFacing.getZ() * directionAxle.getY()),
+                    (directionFacing.getZ() * directionAxle.getX() - directionFacing.getX() * directionAxle.getZ()),
+                    (directionFacing.getX() * directionAxle.getY() - directionFacing.getY() * directionAxle.getX()));
+
+            return forceDirection.mul(this.getThrustMagnitude(physicsObject));
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
@@ -135,7 +152,8 @@ public class TileEntityRudderPart extends
 
     @Override
     public double getThrustMagnitude(PhysicsObject physicsObject) {
-        return 0;
+//        return 0;
+        return rudderAngle * this.getMaxThrust();
     }
 
     public Optional<EnumFacing> getRudderAxleAxisDirection() {

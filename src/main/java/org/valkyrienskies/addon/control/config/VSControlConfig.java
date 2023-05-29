@@ -43,6 +43,10 @@ public class VSControlConfig extends VSConfigTemplate {
     @Config.Comment("Max torque in newton-meters")
     public static double stabilizerMaxTorque = 15000000;
 
+    @Config.Name("Rudder Force Multiplier")
+    @Config.Comment("An arbitrary number that feels about right")
+    public static double rudderForceMultiplier = 5000;
+
     @Config.Name("Gyroscope Dampener Max Torque")
     @Config.Comment("Max torque in newton-meters")
     public static double dampenerMaxTorque = 10000;
