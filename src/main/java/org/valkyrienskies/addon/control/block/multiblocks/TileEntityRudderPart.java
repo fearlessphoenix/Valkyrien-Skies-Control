@@ -23,18 +23,28 @@ import java.util.Optional;
 public class TileEntityRudderPart extends
     TileEntityMultiblockPartForce<RudderAxleMultiblockSchematic, TileEntityRudderPart> {
 
+	static final double PI_OVER_180 = Math.PI/180d;
     // Angle must be between -90 and 90
     private double rudderAngle;
     // For client rendering purposes only
     private double prevRudderAngle;
     private double nextRudderAngle;
+    
+    private Vector3d localVelocity;
+    private Vector3d facingAdjusted;
+    private Vector3d normal;
+    private Vector3d projectedVelocity;
 
-    public TileEntityRudderPart(double maxThrust) {
+    public TileEntityRudderPart(double thrustMultiplier) {
         super();
-        this.setMaxThrust(maxThrust);
+        this.setMaxThrust(thrustMultiplier);
         this.rudderAngle = 0;
         this.prevRudderAngle = 0;
         this.nextRudderAngle = 0;
+        this.localVelocity = new Vector3d();
+        this.facingAdjusted = new Vector3d();
+        this.normal = new Vector3d();
+        this.projectedVelocity = new Vector3d();
     }
 
     @Override
@@ -106,13 +116,23 @@ public class TileEntityRudderPart extends
         if (getRudderAxleSchematic().isPresent()) {
             Vec3i directionFacing = getRudderAxleFacingDirection().get().getDirectionVec();
             Vec3i directionAxle = this.getRudderAxleAxisDirection().get().getDirectionVec();
-            // Cross product of directionFacing and directionAxle.
-            Vector3d forceDirection = new Vector3d(
-                    (directionFacing.getY() * directionAxle.getZ() - directionFacing.getZ() * directionAxle.getY()),
-                    (directionFacing.getZ() * directionAxle.getX() - directionFacing.getX() * directionAxle.getZ()),
-                    (directionFacing.getX() * directionAxle.getY() - directionFacing.getY() * directionAxle.getX()));
+            
+            Vector3d localPos = this.getForcePositionInShipSpace();
+            localPos.sub(physicsObject.getShipTransform().getCenterCoord());
+            this.localVelocity = physicsObject.getPhysicsCalculations().getVelocityAtPoint(localPos, this.localVelocity);
+            physicsObject.getShipTransformationManager().getCurrentPhysicsTransform()
+            	.transformDirection(this.localVelocity, TransformType.GLOBAL_TO_SUBSPACE);
+            this.facingAdjusted.set(directionFacing.getX(), directionFacing.getY(), directionFacing.getZ());
+            this.facingAdjusted.rotateAxis(this.getRudderAngle()*PI_OVER_180, directionAxle.getX(), directionAxle.getY(), directionAxle.getZ());
 
-            return forceDirection.mul(this.getThrustMagnitude(physicsObject));
+            // Cross product of facingAdjusted and directionAxle.
+            this.normal.set(this.facingAdjusted.y()*directionAxle.getZ() - this.facingAdjusted.z()*directionAxle.getY(),
+            		this.facingAdjusted.z()*directionAxle.getX() - this.facingAdjusted.x()*directionAxle.getZ(),
+            		this.facingAdjusted.x()*directionAxle.getY() - this.facingAdjusted.y()*directionAxle.getX());
+            
+            this.normal.mul(this.localVelocity.dot(this.normal), this.projectedVelocity);
+
+            return this.projectedVelocity.mul(-this.getThrustMagnitude(physicsObject));
         } else {
             return null;
         }
@@ -153,7 +173,7 @@ public class TileEntityRudderPart extends
     @Override
     public double getThrustMagnitude(PhysicsObject physicsObject) {
 //        return 0;
-        return rudderAngle * this.getMaxThrust();
+        return this.getMaxThrust();
     }
 
     public Optional<EnumFacing> getRudderAxleAxisDirection() {
