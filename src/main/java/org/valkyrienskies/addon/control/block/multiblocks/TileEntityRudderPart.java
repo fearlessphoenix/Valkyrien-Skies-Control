@@ -13,6 +13,7 @@ import org.joml.Math;
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.valkyrienskies.addon.control.MultiblockRegistry;
+import org.valkyrienskies.addon.control.config.VSControlConfig;
 import org.valkyrienskies.mod.common.network.VSNetwork;
 import org.valkyrienskies.mod.common.ships.ship_world.PhysicsObject;
 import valkyrienwarfare.api.TransformType;
@@ -35,6 +36,10 @@ public class TileEntityRudderPart extends
     private Vector3d normal;
     private Vector3d projectedVelocity;
 
+    public TileEntityRudderPart() {
+    	this(VSControlConfig.rudderForceMultiplier);
+    }
+    
     public TileEntityRudderPart(double thrustMultiplier) {
         super();
         this.setMaxThrust(thrustMultiplier);

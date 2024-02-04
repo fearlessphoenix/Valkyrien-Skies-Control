@@ -17,7 +17,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 //determine the version
-version = "1.0.0"
+version = "1.0.1"
 
 group = "org.valkyrienskies.addon"
 archivesBaseName = "vs-control"
