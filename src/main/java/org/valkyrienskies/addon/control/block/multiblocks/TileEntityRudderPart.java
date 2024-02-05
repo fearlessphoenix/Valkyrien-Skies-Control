@@ -119,6 +119,14 @@ public class TileEntityRudderPart extends
 
     public Vector3d calculateForceFromAngle(PhysicsObject physicsObject) {
         if (getRudderAxleSchematic().isPresent()) {
+        	if (!this.isMaster()) {
+        		TileEntityRudderPart master = this.getMaster();
+        		if (master != null) {
+        			return master.calculateForceFromAngle(physicsObject);
+        		} else {
+        			return null;
+        		}
+        	}
             Vec3i directionFacing = getRudderAxleFacingDirection().get().getDirectionVec();
             Vec3i directionAxle = this.getRudderAxleAxisDirection().get().getDirectionVec();
             
