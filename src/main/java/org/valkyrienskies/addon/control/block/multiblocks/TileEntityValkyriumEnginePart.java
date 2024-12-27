@@ -30,6 +30,7 @@ public class TileEntityValkyriumEnginePart extends
     private double currentKeyframe;
     private double nextKeyframe;
     private boolean firstUpdate;
+    private boolean isReversed;
 
     @SuppressWarnings("WeakerAccess")
     public TileEntityValkyriumEnginePart() {
@@ -38,6 +39,7 @@ public class TileEntityValkyriumEnginePart extends
         this.currentKeyframe = 0;
         this.rotationNode = new ImplRotationNode<>(this, 50, ROTATION_NODE_SORT_PRIORITY);
         this.firstUpdate = true;
+        this.isReversed = false;
     }
 
     @Override
@@ -82,6 +84,7 @@ public class TileEntityValkyriumEnginePart extends
                         currentKeyframe = currentKeyframe % 99;
                     }
                 }
+                //if (this.isMaster() && this.world.getWorldInfo().getWorldTime() % 100 == 99) this.reverseDirection();
                 VSNetwork.sendTileToAllNearby(this);
             }
             this.markDirty();
@@ -93,7 +96,15 @@ public class TileEntityValkyriumEnginePart extends
                 .interpolateModulatedNumbers(currentKeyframe, nextKeyframe, .85, 99);
         }
     }
+    
+    public boolean isReversed() {
+    	return this.getMaster().isReversed;
+    }
 
+    public void reverseDirection() {
+    	this.getMaster().isReversed = !this.getMaster().isReversed;
+    }
+    
     public double getCurrentKeyframe(double partialTick) {
         return VSMath.interpolateModulatedNumbers(prevKeyframe, currentKeyframe, partialTick, 99);
     }

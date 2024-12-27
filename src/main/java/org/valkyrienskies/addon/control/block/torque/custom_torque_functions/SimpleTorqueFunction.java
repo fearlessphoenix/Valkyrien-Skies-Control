@@ -3,6 +3,8 @@ package org.valkyrienskies.addon.control.block.torque.custom_torque_functions;
 import org.valkyrienskies.addon.control.block.torque.IRotationNode;
 import org.valkyrienskies.mod.common.ships.ship_world.PhysicsObject;
 
+import net.minecraft.world.World;
+
 /**
  * Torque functions are used by the rotation nodes to determine their torque each physics tick. They
  * must not be replaced by lambdas otherwise undefined behavior may occur.
@@ -24,7 +26,7 @@ public class SimpleTorqueFunction {
      * @param object The PhysicsObject that rotationNode lives in.
      * @return The torque created by this node.
      */
-    public double calculateTorque(PhysicsObject object) {
+    public double calculateTorque(PhysicsObject object, World world) {
         // Default torque implementation.
         return rotationNode.getAngularVelocity() * rotationNode.getRotationalInertia()
             * DEFAULT_ANGULAR_FRICTION;

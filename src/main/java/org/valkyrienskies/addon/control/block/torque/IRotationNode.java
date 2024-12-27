@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
 import org.valkyrienskies.addon.control.block.torque.custom_torque_functions.SimpleTorqueFunction;
 import org.valkyrienskies.mod.common.ships.ship_world.PhysicsObject;
 
@@ -20,8 +22,8 @@ public interface IRotationNode extends Comparable<IRotationNode> {
     }
 
     @PhysicsThreadOnly
-    default void simulate(double timeStep, PhysicsObject parent) {
-        double torque = calculateInstantaneousTorque(parent);
+    default void simulate(double timeStep, PhysicsObject parent, World world) {
+        double torque = calculateInstantaneousTorque(parent, world);
         double deltaVelocity = (torque / getRotationalInertia()) * timeStep;
         this.setAngularRotation(
             this.getAngularRotation() + (this.getAngularVelocity() * timeStep) + (
@@ -30,13 +32,13 @@ public interface IRotationNode extends Comparable<IRotationNode> {
     }
 
     @PhysicsThreadOnly
-    default double calculateInstantaneousTorque(PhysicsObject parent) {
+    default double calculateInstantaneousTorque(PhysicsObject parent, World world) {
         if (!getCustomTorqueFunction().isPresent()) {
             // Default friction calculation
             return getAngularVelocity() * -.4 * getRotationalInertia();
         } else {
             // System.out.println("test");
-            return getCustomTorqueFunction().get().calculateTorque(parent);
+            return getCustomTorqueFunction().get().calculateTorque(parent, world);
         }
     }
 

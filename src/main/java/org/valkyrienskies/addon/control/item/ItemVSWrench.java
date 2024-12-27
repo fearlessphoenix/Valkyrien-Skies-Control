@@ -15,6 +15,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import org.valkyrienskies.addon.control.block.multiblocks.ITileEntityMultiblockPart;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEnginePart;
 import org.valkyrienskies.addon.control.config.VSControlConfig;
 import org.valkyrienskies.addon.control.tileentity.TileEntityGearbox;
 import org.valkyrienskies.addon.control.util.BaseItem;
@@ -70,7 +71,7 @@ public class ItemVSWrench extends BaseItem {
         boolean shouldDeconstruct = this.mode == EnumWrenchMode.DECONSTRUCT || VSControlConfig.wrenchModeless;
         if (blockTile instanceof ITileEntityMultiblockPart) {
             ITileEntityMultiblockPart part = (ITileEntityMultiblockPart) blockTile;
-            shouldConstruct = shouldConstruct && !part.isPartOfAssembledMultiblock();
+            shouldConstruct = shouldConstruct && (!part.isPartOfAssembledMultiblock() || part instanceof TileEntityValkyriumEnginePart);
             shouldDeconstruct = shouldDeconstruct && part.isPartOfAssembledMultiblock();
         } else if (blockTile instanceof TileEntityGearbox) {
             shouldConstruct = true;
@@ -78,7 +79,10 @@ public class ItemVSWrench extends BaseItem {
             return EnumActionResult.PASS;
         }
         if (shouldConstruct) {
-            if (blockTile instanceof ITileEntityMultiblockPart) {
+        	if (blockTile instanceof TileEntityValkyriumEnginePart && ((TileEntityValkyriumEnginePart) blockTile).isPartOfAssembledMultiblock()) {
+        		((TileEntityValkyriumEnginePart) blockTile).reverseDirection();
+        		return EnumActionResult.PASS;
+        	} else if (blockTile instanceof ITileEntityMultiblockPart) {
                 if (((ITileEntityMultiblockPart) blockTile).attemptToAssembleMultiblock(worldIn, pos, facing)) {
                     return EnumActionResult.SUCCESS;
                 }

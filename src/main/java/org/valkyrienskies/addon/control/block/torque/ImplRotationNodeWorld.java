@@ -29,6 +29,9 @@ public class ImplRotationNodeWorld implements IRotationNodeWorld {
     // Null IFF parent != null
     @Nullable
     private final WeakReference<World> parentWorld;
+    
+    private final World world;
+    
     @Nonnull
     private final Map<BlockPos, IRotationNode> posToNodeMap;
     @Nonnull
@@ -39,6 +42,8 @@ public class ImplRotationNodeWorld implements IRotationNodeWorld {
         this.parentWorld = null;
         this.posToNodeMap = new HashMap<>();
         this.queuedTasks = new ConcurrentLinkedQueue<>();
+        
+        this.world = parent.getWorld();
 
         ((WorldServerShipManager) ((IHasShipManager) parent.getWorld()).getManager())
                 .getPhysicsLoop().addRecurringTask(this::processTorquePhysics);
@@ -52,6 +57,8 @@ public class ImplRotationNodeWorld implements IRotationNodeWorld {
         this.posToNodeMap = new HashMap<>();
         this.queuedTasks = new ConcurrentLinkedQueue<>();
 
+        this.world = parentWorld;
+        
         ((WorldServerShipManager) ((IHasShipManager) parentWorld).getManager())
                 .getPhysicsLoop().addRecurringTask(this::processTorquePhysics);
         ((WorldServerShipManager) ((IHasShipManager) parentWorld).getManager())
@@ -116,7 +123,7 @@ public class ImplRotationNodeWorld implements IRotationNodeWorld {
         while (nodesToVisit.size() > 0) {
             IRotationNode startNode = nodesToVisit.get(0);
             Set<IRotationNode> visitedNodes = new HashSet<>();
-            double apparentTorque = calculateApparentTorque(startNode, visitedNodes);
+            double apparentTorque = calculateApparentTorque(startNode, visitedNodes, this.world);
             visitedNodes.clear(); // not the best practice
             double apparentInertia = calculateApparentInertia(startNode, visitedNodes);
             visitedNodes.clear(); // not the best practice
@@ -292,14 +299,14 @@ public class ImplRotationNodeWorld implements IRotationNodeWorld {
      * @param visitedNodes Nodes we ignore in our calculations.
      * @return
      */
-    private double calculateApparentTorque(IRotationNode start, Set<IRotationNode> visitedNodes) {
+    private double calculateApparentTorque(IRotationNode start, Set<IRotationNode> visitedNodes, World world) {
         visitedNodes.add(start); // kind of a bad spot to put this
         PhysicsObject ship = null;
         if (parent != null) {
             ship = parent.get();
         }
         // actual code start
-        double apparentTorque = start.calculateInstantaneousTorque(ship);
+        double apparentTorque = start.calculateInstantaneousTorque(ship, world);
         for (Tuple<IRotationNode, EnumFacing> connectedNode : start.connectedTorqueTilesList()) {
             IRotationNode endNode = connectedNode.getFirst();
             EnumFacing exploreDirection = connectedNode.getSecond();
@@ -310,7 +317,7 @@ public class ImplRotationNodeWorld implements IRotationNodeWorld {
             double ratioEnd = endNode.getAngularVelocityRatioFor(exploreDirection.getOpposite())
                 .get();
             double multiplier = -ratioStart / ratioEnd;
-            apparentTorque += (multiplier * calculateApparentTorque(endNode, visitedNodes));
+            apparentTorque += (multiplier * calculateApparentTorque(endNode, visitedNodes, world));
         }
         return apparentTorque;
     }
