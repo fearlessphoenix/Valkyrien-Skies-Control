@@ -176,6 +176,7 @@ public class TileEntityValkyriumEnginePart extends
         if (this.getWorld() == null || !this.getWorld().isRemote) {
             rotationNode.readFromNBT(compound);
         }
+        this.isReversed = compound.hasKey("reversed") ? compound.getBoolean("reversed") : false;
 //        rotationNode.markInitialized();
     }
 
@@ -183,6 +184,7 @@ public class TileEntityValkyriumEnginePart extends
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         rotationNode.writeToNBT(compound);
+        compound.setBoolean("reversed", this.isReversed);
         return compound;
     }
 
