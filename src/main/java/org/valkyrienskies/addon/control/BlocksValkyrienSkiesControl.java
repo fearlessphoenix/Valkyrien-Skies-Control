@@ -5,6 +5,7 @@ import org.valkyrienskies.addon.control.block.*;
 import org.valkyrienskies.addon.control.block.engine.BlockNormalEngine;
 import org.valkyrienskies.addon.control.block.engine.BlockRedstoneEngine;
 import org.valkyrienskies.addon.control.block.multiblocks.BlockGiantPropellerPart;
+import org.valkyrienskies.addon.control.block.multiblocks.BlockRudderBoatPart;
 import org.valkyrienskies.addon.control.block.multiblocks.BlockRudderPart;
 import org.valkyrienskies.addon.control.block.multiblocks.BlockValkyriumCompressorPart;
 import org.valkyrienskies.addon.control.block.multiblocks.BlockValkyriumEnginePart;
@@ -42,6 +43,7 @@ public class BlocksValkyrienSkiesControl {
     public final Block rudderPart;
     public final Block giantPropellerPart;
     public final Block rotationAxle;
+    public final Block rudderBoatPart;
 
     public BlocksValkyrienSkiesControl() {
         physicsInfuser = registerBlock(new BlockPhysicsInfuser("physics_infuser"));
@@ -79,6 +81,8 @@ public class BlocksValkyrienSkiesControl {
         giantPropellerPart = registerBlock(new BlockGiantPropellerPart());
         rotationAxle = registerBlock(new BlockRotationAxle());
         gearbox = registerBlock(new BlockGearbox());
+
+        rudderBoatPart = registerBlock(new BlockRudderBoatPart());
     }
 
     private <T extends Block> T registerBlock(T block) {
