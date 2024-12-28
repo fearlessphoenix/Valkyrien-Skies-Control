@@ -52,7 +52,7 @@ public class SpeedTelegraphTileEntityRenderer extends
         GL11.glTranslated((1D - multiplier) / 2.0D, 0, (1D - multiplier) / 2.0D);
         GL11.glScaled(multiplier, multiplier, multiplier);
         EnumFacing enumfacing = telegraphState.getValue(BlockSpeedTelegraph.FACING);
-        double wheelAndCompassStateRotation = enumfacing.getHorizontalAngle();
+        double wheelAndCompassStateRotation = -enumfacing.getHorizontalAngle();
 
         GL11.glTranslated(0.5D, 0, 0.5D);
         GL11.glRotated(wheelAndCompassStateRotation, 0, 1, 0);

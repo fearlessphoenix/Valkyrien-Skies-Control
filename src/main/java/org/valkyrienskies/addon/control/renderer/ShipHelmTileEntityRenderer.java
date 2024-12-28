@@ -69,7 +69,7 @@ public class ShipHelmTileEntityRenderer extends TileEntitySpecialRenderer<TileEn
             GL11.glTranslated((1D - multiplier) / 2.0D, 0, (1D - multiplier) / 2.0D);
             GL11.glScaled(multiplier, multiplier, multiplier);
             EnumFacing enumfacing = helmState.getValue(BlockShipHelm.FACING);
-            double wheelAndCompassStateRotation = enumfacing.getHorizontalAngle();
+            double wheelAndCompassStateRotation = -enumfacing.getHorizontalAngle();
 
             GL11.glTranslated(0.5D, 0, 0.5D);
             GL11.glRotated(wheelAndCompassStateRotation, 0, 1, 0);
@@ -78,7 +78,7 @@ public class ShipHelmTileEntityRenderer extends TileEntitySpecialRenderer<TileEn
 
             GL11.glPushMatrix();
             GL11.glTranslated(.5, .522, 0);
-            GL11.glRotated(smoothWheel, 0, 0, 1);
+            GL11.glRotated(-smoothWheel, 0, 0, 1);
             GL11.glTranslated(-.5, -.522, 0);
             GibsModelRegistry.renderGibsModel("ship_helm_wheel", brightness);
             GL11.glPopMatrix();

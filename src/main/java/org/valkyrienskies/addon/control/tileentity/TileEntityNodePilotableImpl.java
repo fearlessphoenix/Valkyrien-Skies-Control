@@ -137,7 +137,7 @@ public abstract class TileEntityNodePilotableImpl extends BasicNodeTileEntity im
         tileRelativePos.sub(player.posX, player.posY, player.posZ);
         Vector3d normal = new Vector3d(blockFacing.getDirectionVec().getX() * -1,
             blockFacing.getDirectionVec().getY(),
-            blockFacing.getDirectionVec().getZ());
+            blockFacing.getDirectionVec().getZ() * -1);
 
         if (this.getParentPhysicsEntity() != null) {
             this.getParentPhysicsEntity().getShipTransformationManager()

@@ -41,10 +41,10 @@ public class TileEntitySpeedTelegraph extends TileEntityNodePilotableImpl implem
     public void processControlMessage(PilotControlsMessage message, EntityPlayerMP sender) {
         int deltaOrdinal = 0;
         if (message.airshipLeft_KeyPressed) {
-            deltaOrdinal -= 1;
+            deltaOrdinal += 1;
         }
         if (message.airshipRight_KeyPressed) {
-            deltaOrdinal += 1;
+            deltaOrdinal -= 1;
         }
         IBlockState blockState = this.getWorld().getBlockState(getPos());
         if (blockState.getBlock() instanceof BlockSpeedTelegraph) {
