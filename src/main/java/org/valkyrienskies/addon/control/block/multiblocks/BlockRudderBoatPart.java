@@ -43,7 +43,7 @@ public class BlockRudderBoatPart extends BaseBlock implements ITileEntityProvide
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityRudderBoatPart(VSControlConfig.rudderForceMultiplier);
+        return new TileEntityRudderBoatPart(VSControlConfig.rudderForceMultiplier, VSControlConfig.rudderFluidMultiplier);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.valkyrienskies.addon.control.block.multiblocks;
 
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,14 +36,17 @@ public class TileEntityRudderBoatPart extends
     private Vector3d facingAdjusted;
     private Vector3d normal;
     private Vector3d projectedVelocity;
+    
+    private double waterMultiplier;
 
     public TileEntityRudderBoatPart() {
-    	this(VSControlConfig.rudderForceMultiplier);
+    	this(VSControlConfig.rudderForceMultiplier, VSControlConfig.rudderFluidMultiplier);
     }
     
-    public TileEntityRudderBoatPart(double thrustMultiplier) {
+    public TileEntityRudderBoatPart(double thrustMultiplier, double waterMultiplier) {
         super();
         this.setMaxThrust(thrustMultiplier);
+        this.waterMultiplier = waterMultiplier;
         this.rudderAngle = 0;
         this.prevRudderAngle = 0;
         this.nextRudderAngle = 0;
@@ -117,12 +121,12 @@ public class TileEntityRudderBoatPart extends
         }
     }
 
-    public Vector3d calculateForceFromAngle(PhysicsObject physicsObject) {
+    public Vector3d calculateForceFromAngleUnadjusted(PhysicsObject physicsObject) {
         if (getRudderAxleSchematic().isPresent()) {
         	if (!this.isMaster()) {
         		TileEntityRudderBoatPart master = this.getMaster();
         		if (master != null) {
-        			return master.calculateForceFromAngle(physicsObject);
+        			return master.calculateForceFromAngleUnadjusted(physicsObject);
         		} else {
         			return null;
         		}
@@ -145,10 +149,25 @@ public class TileEntityRudderBoatPart extends
             
             this.normal.mul(this.localVelocity.dot(this.normal), this.projectedVelocity);
 
-            return this.projectedVelocity.mul(-this.getThrustMagnitude(physicsObject));
+            return this.projectedVelocity.mul(-1);
         } else {
             return null;
         }
+    }
+    
+    public Vector3d calculateForceFromAngle(PhysicsObject physicsObject) {
+    	if (getRudderAxleSchematic().isPresent()) {
+    		Vector3d unadjusted = this.calculateForceFromAngleUnadjusted(physicsObject);
+    		BlockPos thisPos = this.getPos();
+    		Vector3d globalPos = new Vector3d(thisPos.getX(), thisPos.getY(), thisPos.getZ());
+    		physicsObject.getShipTransformationManager().getCurrentPhysicsTransform().transformPosition(globalPos, TransformType.SUBSPACE_TO_GLOBAL);
+    		BlockPos pos = new BlockPos(globalPos.x, globalPos.y, globalPos.z);
+    		boolean isInFluid = this.world.getBlockState(pos).getBlock() instanceof BlockLiquid;
+    		Vector3d force = isInFluid ? unadjusted.mul(this.getMaxThrust() * this.waterMultiplier) : unadjusted.mul(this.getMaxThrust() / 2);
+    		return force;
+    	} else {
+    		return null;
+    	}
     }
 
     @Override
@@ -186,7 +205,7 @@ public class TileEntityRudderBoatPart extends
     @Override
     public double getThrustMagnitude(PhysicsObject physicsObject) {
 //        return 0;
-        return this.getMaxThrust();
+        return this.getMaxThrust() / 2;
     }
 
     public Optional<EnumFacing> getRudderAxleAxisDirection() {

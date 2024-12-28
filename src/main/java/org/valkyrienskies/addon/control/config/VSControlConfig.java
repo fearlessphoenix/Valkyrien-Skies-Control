@@ -47,6 +47,10 @@ public class VSControlConfig extends VSConfigTemplate {
     @Config.Comment("Another arbitrary number that feels about right")
     public static double rudderForceMultiplier = 3000;
 
+    @Config.Name("Boat Rudder Fluid Force Multiplier")
+    @Config.Comment("The additional force multiplier of a boat rudder when in a fluid.")
+    public static double rudderFluidMultiplier = 100;
+
     @Config.Name("Gyroscope Dampener Max Torque")
     @Config.Comment("Max torque in newton-meters")
     public static double dampenerMaxTorque = 10000;
