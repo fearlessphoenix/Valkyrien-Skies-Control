@@ -114,8 +114,8 @@ public class RudderBoatPartTileEntityRenderer extends
 
                 GL11.glPushMatrix();
                 GL11.glTranslated(.5, 0, .5);
-                GL11.glScaled(rudderAxleLength, rudderAxleLength, rudderAxleLength);
-                GL11.glTranslated(-.5, 0, -.5);
+                GL11.glScaled(rudderAxleLength, -rudderAxleLength, -rudderAxleLength);
+                GL11.glTranslated(-.5, -1, -.5);
 
                 GibsModelRegistry.renderGibsModel("rudder_boat_geo", brightness);
                 GL11.glPopMatrix();
