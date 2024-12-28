@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.joml.Vector3d;
 import org.valkyrienskies.addon.control.ValkyrienSkiesControl;
 import org.valkyrienskies.addon.control.block.BlockShipHelm;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudderBoatPart;
 import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudderPart;
 import org.valkyrienskies.addon.control.nodenetwork.VSNode_TileEntity;
 import org.valkyrienskies.mod.common.piloting.ControllerInputType;
@@ -62,12 +63,26 @@ public class TileEntityShipHelm extends TileEntityNodePilotableImpl implements I
 
             VSNode_TileEntity thisNode = this.getNode();
 
+            // Quick fix for NullPointerException
+            if (thisNode == null || thisNode.getGraph() == null || thisNode.getGraph().getObjects() == null) {
+            	VSNetwork.sendTileToAllNearby(null);
+            	return;
+            }
+            
             for (GraphObject object : thisNode.getGraph().getObjects()) {
                 VSNode_TileEntity otherNode = (VSNode_TileEntity) object;
                 TileEntity tile = otherNode.getParentTile();
                 if (tile instanceof TileEntityRudderPart) {
                     BlockPos masterPos = ((TileEntityRudderPart) tile).getMultiblockOrigin();
                     TileEntityRudderPart masterTile = (TileEntityRudderPart) tile.getWorld()
+                        .getTileEntity(masterPos);
+                    // This is a transient problem that only occurs during world loading.
+                    if (masterTile != null) {
+                        masterTile.setRudderAngle(-this.wheelRotation / 8D);
+                    }
+                } else if (tile instanceof TileEntityRudderBoatPart) {
+                    BlockPos masterPos = ((TileEntityRudderBoatPart) tile).getMultiblockOrigin();
+                    TileEntityRudderBoatPart masterTile = (TileEntityRudderBoatPart) tile.getWorld()
                         .getTileEntity(masterPos);
                     // This is a transient problem that only occurs during world loading.
                     if (masterTile != null) {
