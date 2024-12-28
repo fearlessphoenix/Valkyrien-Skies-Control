@@ -1,0 +1,62 @@
+# Blender 3.4.1 MTL File: 'rudder_boat.blend'
+# www.blender.org
+
+newmtl ruddercable_mtlSG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd vs_control:blocks/rudder/rudder_cable
+
+newmtl ruddermetal_mtlSG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd vs_control:blocks/rudder/rudder_metal
+
+newmtl rudderood01_mtlSG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd vs_control:blocks/rudder/rudder_wood_01
+
+newmtl ruddersail_mtlSG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd vs_control:blocks/rudder/rudder_wood_01
+
+newmtl rudderwood02_mtlSG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd vs_control:blocks/rudder/rudder_wood_02
+
+newmtl rudderwood03_mtlSG
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd vs_control:blocks/rudder/rudder_wood_03

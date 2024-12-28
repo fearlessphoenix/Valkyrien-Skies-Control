@@ -131,6 +131,7 @@ public class ClientProxyControl extends CommonProxyControl {
         registerControlGibs("ship_helm_wheel");
 
         registerRudderGibs("rudder_geo");
+        registerRudderGibs("rudder_boat_geo");
         registerRudderGibs("rudder_axle_geo");
 
         registerGearboxGibs("gearbox_back_geo");
@@ -171,6 +172,10 @@ public class ClientProxyControl extends CommonProxyControl {
         GibsAtomAnimationRegistry.registerAnimation("rudder",
             new ResourceLocation(ValkyrienSkiesControl.MOD_ID,
                 "models/block/rudder/rudder_animation.atom"));
+
+        GibsAtomAnimationRegistry.registerAnimation("rudder_boat",
+            new ResourceLocation(ValkyrienSkiesControl.MOD_ID,
+                "models/block/rudder/rudder_boat_animation.atom"));
 
         GibsAtomAnimationRegistry.registerAnimation("rotation_axle",
             new ResourceLocation(ValkyrienSkiesControl.MOD_ID,
