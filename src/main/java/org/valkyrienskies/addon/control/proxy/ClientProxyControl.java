@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.event.FMLStateEvent;
 import org.valkyrienskies.addon.control.ControlEventsClient;
 import org.valkyrienskies.addon.control.ValkyrienSkiesControl;
 import org.valkyrienskies.addon.control.block.multiblocks.TileEntityGiantPropellerPart;
+import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudderBoatPart;
 import org.valkyrienskies.addon.control.block.multiblocks.TileEntityRudderPart;
 import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumCompressorPart;
 import org.valkyrienskies.addon.control.block.multiblocks.TileEntityValkyriumEnginePart;
@@ -111,6 +112,8 @@ public class ClientProxyControl extends CommonProxyControl {
             new RotationAxleTileEntityRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPhysicsInfuser.class,
                 new TileEntityPhysicsInfuserRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRudderBoatPart.class,
+                new RudderBoatPartTileEntityRenderer());
     }
 
     @Override

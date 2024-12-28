@@ -98,6 +98,8 @@ public class ValkyrienSkiesControl {
         .registerAllPossibleSchematicVariants(RudderAxleMultiblockSchematic.class);
         MultiblockRegistry
         .registerAllPossibleSchematicVariants(GiantPropellerMultiblockSchematic.class);
+        MultiblockRegistry
+        .registerAllPossibleSchematicVariants(RudderBoatAxleMultiblockSchematic.class);
     }
 
     @SubscribeEvent
@@ -177,6 +179,9 @@ public class ValkyrienSkiesControl {
 
         GameRegistry.registerTileEntity(TileEntityPhysicsInfuser.class,
                 new ResourceLocation(MOD_ID, "tile_physics_infuser"));
+
+        GameRegistry.registerTileEntity(TileEntityRudderBoatPart.class,
+            new ResourceLocation(MOD_ID, "tile_rudder_boat_part"));
     }
 
     private void registerCapabilities() {

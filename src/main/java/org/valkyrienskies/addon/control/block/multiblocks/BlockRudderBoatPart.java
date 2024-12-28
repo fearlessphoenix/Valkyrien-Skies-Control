@@ -43,7 +43,7 @@ public class BlockRudderBoatPart extends BaseBlock implements ITileEntityProvide
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityRudderPart(VSControlConfig.rudderForceMultiplier);
+        return new TileEntityRudderBoatPart(VSControlConfig.rudderForceMultiplier);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class BlockRudderBoatPart extends BaseBlock implements ITileEntityProvide
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileEntityRudderPart) {
-            ((TileEntityRudderPart) tile).disassembleMultiblock();
+        if (tile instanceof TileEntityRudderBoatPart) {
+            ((TileEntityRudderBoatPart) tile).disassembleMultiblock();
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -74,8 +74,8 @@ public class BlockRudderBoatPart extends BaseBlock implements ITileEntityProvide
     public Vector3dc getBlockForceInShipSpace(World world, BlockPos pos, IBlockState state,
         PhysicsObject physicsObject,
         double secondsToApply) {
-        if (world.getTileEntity(pos) instanceof TileEntityRudderPart) {
-            TileEntityRudderPart tileEntity = (TileEntityRudderPart) world
+        if (world.getTileEntity(pos) instanceof TileEntityRudderBoatPart) {
+            TileEntityRudderBoatPart tileEntity = (TileEntityRudderBoatPart) world
                 .getTileEntity(pos);
             Vector3d forceBeforeTimeScale = tileEntity.calculateForceFromAngle(physicsObject);
             if (forceBeforeTimeScale != null && forceBeforeTimeScale.lengthSquared() > 1) {
@@ -93,8 +93,8 @@ public class BlockRudderBoatPart extends BaseBlock implements ITileEntityProvide
     public Vector3dc getCustomBlockForcePosition(World world, BlockPos pos, IBlockState state,
                                                  PhysicsObject physicsObject,
                                                  double secondsToApply) {
-        if (world.getTileEntity(pos) instanceof TileEntityRudderPart) {
-            TileEntityRudderPart tileEntity = (TileEntityRudderPart) world
+        if (world.getTileEntity(pos) instanceof TileEntityRudderBoatPart) {
+            TileEntityRudderBoatPart tileEntity = (TileEntityRudderBoatPart) world
                 .getTileEntity(pos);
             return null; // tileEntity.getForcePositionInShipSpace();
         } else {
