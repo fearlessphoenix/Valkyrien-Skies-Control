@@ -190,6 +190,10 @@ public class ClientProxyControl extends CommonProxyControl {
             new ResourceLocation(ValkyrienSkiesControl.MOD_ID,
                 "models/block/giant_propeller/giant_propeller.atom"));
 
+        GibsAtomAnimationRegistry.registerAnimation("giant_propeller_boat",
+            new ResourceLocation(ValkyrienSkiesControl.MOD_ID,
+                "models/block/giant_propeller/giant_propeller_boat.atom"));
+
         GibsAtomAnimationRegistry.registerAnimation("physics_infuser",
                 new ResourceLocation(ValkyrienSkiesControl.MOD_ID,
                         "models/block/physics_infuser/physics_infuser.atom"));

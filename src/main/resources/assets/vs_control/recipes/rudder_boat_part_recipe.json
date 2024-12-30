@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "DDC",
+        "CCC",
+        " DC"
+    ],
+    
+    "key":
+    {
+        "C": {
+            "item": "minecraft:stick"
+        },
+        "D": {
+        	"type": "forge:ore_dict",
+        	"ore": "plankWood"
+        }
+    },
+    
+    "result":
+    {
+        "item": "vs_control:rudder_boat_part",
+        "count": 1
+    }
+}
