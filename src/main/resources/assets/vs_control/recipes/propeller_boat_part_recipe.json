@@ -1,0 +1,32 @@
+{
+    "type": "minecraft:crafting_shaped",
+    
+    "pattern":
+    [
+        "ICI",
+        "CDC",
+        "ICI"
+    ],
+    
+    "key":
+    {
+        "I": {
+        	"type": "forge:ore_dict",
+        	"ore": "ingotIron"
+        },
+        "C": {
+        	"type": "forge:ore_dict",
+        	"ore": "nuggetIron"
+        },
+        "D": {
+        	"type": "forge:ore_dict",
+        	"ore": "ingotIron"
+        }
+    },
+    
+    "result":
+    {
+        "item": "vs_control:giant_propeller_boat_part",
+        "count": 1
+    }
+}
