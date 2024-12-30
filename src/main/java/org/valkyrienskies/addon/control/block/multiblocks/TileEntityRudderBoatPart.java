@@ -136,6 +136,8 @@ public class TileEntityRudderBoatPart extends
             
             Vector3d localPos = this.getForcePositionInShipSpace();
             localPos.sub(physicsObject.getShipTransform().getCenterCoord());
+            physicsObject.getShipTransformationManager().getCurrentPhysicsTransform()
+        		.transformDirection(localPos, TransformType.SUBSPACE_TO_GLOBAL);
             this.localVelocity = physicsObject.getPhysicsCalculations().getVelocityAtPoint(localPos, this.localVelocity);
             physicsObject.getShipTransformationManager().getCurrentPhysicsTransform()
             	.transformDirection(this.localVelocity, TransformType.GLOBAL_TO_SUBSPACE);
