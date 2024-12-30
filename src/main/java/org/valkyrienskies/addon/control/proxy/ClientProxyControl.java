@@ -77,6 +77,7 @@ public class ClientProxyControl extends CommonProxyControl {
         registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.physicsInfuserCreative);
         
         registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.rudderBoatPart);
+        registerBlockItem(ValkyrienSkiesControl.INSTANCE.vsControlBlocks.giantPropellerBoatPart);
     }
 
     private static void registerItemModels() {
