@@ -40,8 +40,8 @@ public class BlockGiantPropellerBoatPart extends BaseBlock implements ITileEntit
     public Vector3dc getBlockForceInShipSpace(World world, BlockPos pos, IBlockState state,
                                               PhysicsObject physicsObject, double secondsToApply) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileEntityGiantPropellerPart) {
-            TileEntityGiantPropellerPart tileCompressorPart = (TileEntityGiantPropellerPart) tileEntity;
+        if (tileEntity instanceof TileEntityGiantPropellerBoatPart) {
+            TileEntityGiantPropellerBoatPart tileCompressorPart = (TileEntityGiantPropellerBoatPart) tileEntity;
             return tileCompressorPart.getForceOutputUnoriented(secondsToApply, physicsObject);
         }
         return null;
@@ -56,8 +56,8 @@ public class BlockGiantPropellerBoatPart extends BaseBlock implements ITileEntit
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity tile = worldIn.getTileEntity(pos);
-        if (tile instanceof TileEntityGiantPropellerPart) {
-            ((TileEntityGiantPropellerPart) tile).disassembleMultiblock();
+        if (tile instanceof TileEntityGiantPropellerBoatPart) {
+            ((TileEntityGiantPropellerBoatPart) tile).disassembleMultiblock();
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -65,7 +65,7 @@ public class BlockGiantPropellerBoatPart extends BaseBlock implements ITileEntit
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileEntityGiantPropellerPart();
+        return new TileEntityGiantPropellerBoatPart();
     }
 
     // Lighting crap
