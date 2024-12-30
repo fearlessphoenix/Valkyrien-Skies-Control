@@ -11,6 +11,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.valkyrienskies.addon.control.MultiblockRegistry;
 import org.valkyrienskies.addon.control.block.torque.*;
+import org.valkyrienskies.addon.control.config.VSControlConfig;
 import org.valkyrienskies.addon.control.util.ValkyrienSkiesControlUtil;
 import org.valkyrienskies.mod.common.network.VSNetwork;
 import org.valkyrienskies.mod.common.ships.ship_world.PhysicsObject;
@@ -90,7 +91,7 @@ public class TileEntityGiantPropellerPart extends
                 }
                 double angularVel = this.getRotationNode().get().getAngularVelocity();
                 // Temporary simple thrust function.
-                return 500D * angularVel * angularVel;
+                return VSControlConfig.propellerThrustMultiplier * angularVel * angularVel;
             }
         }
     }

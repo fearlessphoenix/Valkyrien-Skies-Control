@@ -51,6 +51,14 @@ public class VSControlConfig extends VSConfigTemplate {
     @Config.Comment("The additional force multiplier of a boat rudder when in a fluid.")
     public static double rudderFluidMultiplier = 100;
 
+    @Config.Name("Giant Propeller Thrust Multiplier")
+    @Config.Comment("Thrust multiplier of the giant propeller.")
+    public static double propellerThrustMultiplier = 500;
+
+    @Config.Name("Boat Propeller Fluid Thrust Multiplier")
+    @Config.Comment("The additional thrust multiplier of a boat propeller when in a fluid.")
+    public static double propellerFluidMultiplier = 2;
+
     @Config.Name("Gyroscope Dampener Max Torque")
     @Config.Comment("Max torque in newton-meters")
     public static double dampenerMaxTorque = 10000;

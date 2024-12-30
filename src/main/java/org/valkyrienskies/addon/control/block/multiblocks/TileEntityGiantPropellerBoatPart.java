@@ -1,5 +1,6 @@
 package org.valkyrienskies.addon.control.block.multiblocks;
 
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -7,10 +8,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import valkyrienwarfare.api.TransformType;
+
 import org.joml.Vector3d;
 import org.joml.Vector3dc;
 import org.valkyrienskies.addon.control.MultiblockRegistry;
 import org.valkyrienskies.addon.control.block.torque.*;
+import org.valkyrienskies.addon.control.config.VSControlConfig;
 import org.valkyrienskies.addon.control.util.ValkyrienSkiesControlUtil;
 import org.valkyrienskies.mod.common.network.VSNetwork;
 import org.valkyrienskies.mod.common.ships.ship_world.PhysicsObject;
@@ -72,15 +76,14 @@ public class TileEntityGiantPropellerBoatPart extends
         }
     }
 
-    @Override
-    public double getThrustMagnitude(PhysicsObject physicsObject) {
+    public double getThrustMagnitudeUnadjusted(PhysicsObject physicsObject) {
         if (!this.isPartOfAssembledMultiblock()) {
             return 0;
         } else {
             if (!this.isMaster()) {
                 TileEntityGiantPropellerBoatPart master = this.getMaster();
                 if (master != null) {
-                    return master.getThrustMagnitude(physicsObject);
+                    return master.getThrustMagnitudeUnadjusted(physicsObject);
                 } else {
                     return 0;
                 }
@@ -90,9 +93,20 @@ public class TileEntityGiantPropellerBoatPart extends
                 }
                 double angularVel = this.getRotationNode().get().getAngularVelocity();
                 // Temporary simple thrust function.
-                return 500D * angularVel * angularVel;
+                return angularVel * angularVel;
             }
         }
+    }
+
+    @Override
+    public double getThrustMagnitude(PhysicsObject physicsObject) {
+        double unadjusted = this.getThrustMagnitudeUnadjusted(physicsObject);
+		BlockPos thisPos = this.getPos();
+		Vector3d globalPos = new Vector3d(thisPos.getX(), thisPos.getY(), thisPos.getZ());
+		physicsObject.getShipTransformationManager().getCurrentPhysicsTransform().transformPosition(globalPos, TransformType.SUBSPACE_TO_GLOBAL);
+		BlockPos pos = new BlockPos(globalPos.x, globalPos.y, globalPos.z);
+		boolean isInFluid = this.world.getBlockState(pos).getBlock() instanceof BlockLiquid;
+        return isInFluid ? VSControlConfig.propellerThrustMultiplier * VSControlConfig.propellerFluidMultiplier * unadjusted : VSControlConfig.propellerThrustMultiplier / 2 * unadjusted;
     }
 
     @Override
